@@ -1,4 +1,4 @@
-# # Getting and Cleaning Data Peer Assessment
+# Getting and Cleaning Data Peer Assessment
 
 This repo contains my solution to the Getting and Cleaning Data Peer Assessment (see description below).
 
