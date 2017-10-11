@@ -13,17 +13,16 @@ Xtrain<- read.table("UCI HAR Dataset/train/X_train.txt")
 Ytrain<- read.table("UCI HAR Dataset/train/Y_train.txt")
 trainsub <-read.table("UCI HAR Dataset/train/subject_train.txt")
 ## merge datasets
-Xdata<- rbind(Xtest,Xtrain)
-Ydata<- rbind(Ytest, Ytrain)
-Subdata<- rbind(testsub,trainsub)
+Xdata<- bind_rows(Xtest,Xtrain)
+Ydata<- bind_rows(Ytest, Ytrain)
+Subdata<- bind_rows(testsub,trainsub)
 
 
 ##Extracts only the measurements on the mean and standard deviation for each measurement
 ## read in features and activities labels
 features<- read.table("UCI HAR Dataset/features.txt")
-act<- read.table("UCI HAR Dataset/activity_labels.txt")
-mean.sd <- grep("-mean\\(\\)|-std\\(\\)", features[, 2])
-x.mean.sd <- x[, mean.sd]
+mean.sd <- grep("mean\\(\\)|std\\(\\)", features[, 2])
+x.mean.sd <- Xdata[mean.sd]
 
 # Uses descriptive activity names to name the activities in the data set
 names(x.mean.sd) <- features[mean.sd, 2]
