@@ -24,3 +24,32 @@ features<- read.table("UCI HAR Dataset/features.txt")
 act<- read.table("UCI HAR Dataset/activity_labels.txt")
 mean.sd <- grep("-mean\\(\\)|-std\\(\\)", features[, 2])
 x.mean.sd <- x[, mean.sd]
+
+# Uses descriptive activity names to name the activities in the data set
+names(x.mean.sd) <- features[mean.sd, 2]
+names(x.mean.sd) <- tolower(names(x.mean.sd)) 
+names(x.mean.sd) <- gsub("\\(|\\)", "", names(x.mean.sd))
+
+act<- read.table("UCI HAR Dataset/activity_labels.txt")
+act[, 2] <- tolower(as.character(act[, 2]))
+act[, 2] <- gsub("_", "", act[, 2])
+Ydata[, 1]<- act[Ydata[, 1], 2]
+
+
+# Appropriately labels the data set with descriptive activity names.
+names<- features[mean.sd,2]
+names(x.mean.sd)<-names
+colnames(Ydata) <- 'activity'
+colnames(Subdata) <- 'subjectid'
+
+
+data <- bind_cols(Subdata, Ydata, x.mean.sd)
+str(data)
+write.table(data, './week4/merged.txt', row.names = F)
+
+# Creates a second, independent tidy data set with the average of each variable for each 
+#activity and each subject. 
+data2<- data.table(data)
+tidydata <- data2[,lapply(.SD,mean), by = 'subjectid,activity']
+str(tidydata)
+write.table(tidydata, './week4/tidy.txt', row.names = F)
